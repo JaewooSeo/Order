@@ -1,0 +1,8 @@
+body {
+}
+
+.main {
+    max-width: 600px;
+    padding:  15px;
+    margin: 0 auto;
+}

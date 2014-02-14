@@ -1,0 +1,28 @@
+extends ../layout
+
+block content
+    div(class="main")
+        h2 메뉴판
+        each menu in menus
+            div(class="panel panel-default")
+                div(class="panel-heading")
+                    b #{menu.name}
+                div(class="panel-body")
+                    if menu.image 
+                        img(src="/images/menus/"+menu.image class="img-responsive img-rounded")
+                    p #{menu.desc}
+                    div(align="right")
+                        div(class="btn-group")
+                            btn(type="button" class="btn btn-default btn-sm") 
+                                span(class="glyphicon glyphicon-edit")
+                                | 수정
+                            btn(type="button" class="btn btn-default btn-sm") 
+                                span(class="glyphicon glyphicon-remove")
+                                    | 삭제
+                ul(class="list-group")
+                    li(class="list-group-item")
+                        | comment1
+                    li(class="list-group-item")
+                        | comment1
+                    li(class="list-group-item")
+                        | comment1
