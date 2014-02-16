@@ -1,0 +1,9 @@
+div(class="modal-header")
+    h2 메뉴 수정
+div(class="modal-body")
+    form(class="form-menus-new" method="post" action="/menus/" + menu._id)
+        input(type="hidden" name="_method" value="put")
+        input(name="menuName" value=menu.name type="text" class="form-control" placeholder="메뉴판" required autofocus)
+        img(id="menuImagePreview" src="/images/menus/"+menu.image class="img-thumbnail")
+        textarea(name="menuDesc" class="form-control" placeholder="설명" rows="5") #{menu.desc}
+        button(type="submit" class="btn btn-primary btn-lg btn-block") 수정

@@ -1,34 +1,25 @@
-extends ../layout
+div(class="modal-header")
+    h2 새 메뉴
+div(class="modal-body")
+    form(class="form-menus-new" method="post" action="/menus/create" enctype="multipart/form-data")
+        input(name="menuName" type="text" class="form-control" placeholder="메뉴판" required autofocus)
+        input(id="menuImageFile" name="menuImage" type="file" required)
+        img(id="menuImagePreview" src="#" class="img-thumbnail")
+        textarea(name="menuDesc" class="form-control" placeholder="설명" rows="5")
+        button(type="submit" class="btn btn-primary btn-lg btn-block") 추가
 
-block content
-    div(class="main")
-        form(class="form-menus-new" method="post" action="/menus/create" enctype="multipart/form-data")
-            h2 메뉴판
-            input(name="menuName" type="text" class="form-control" placeholder="메뉴판" required autofocus)
-            input(id="menuImageFile" name="menuImage" type="file" required)
-            img(id="menuImagePreview" src="#" class="img-thumbnail")
-            textarea(name="menuDesc" class="form-control" placeholder="설명" rows="5")
-            button(type="submit" class="btn btn-primary btn-lg btn-block") 추가
-
-    script(type="text/javascript").
-        ;(function($){
-            function readURL(input) {
-                var $preview = $('#menuImagePreview')
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $preview.attr('src', e.target.result);
-                    }
-                    reader.readAsDataURL(input.files[0]);
-
-                    $preview.show();
-                } else {
-                    $preview.hide();
-                }
+script(type="text/javascript").
+    ;(function($){
+        function readURL(input) {
+            var $preview = $('#menuImagePreview')
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) { $preview.attr('src', e.target.result); }
+                reader.readAsDataURL(input.files[0]);
             }
-
-            $('#menuImagePreview').hide();
-            $("#menuImageFile").on('change', function(){
-                readURL(this);
-            });
-        })(jQuery);
+        }
+            
+        $('#menuImagePreview').error(function() { $(this).hide(); });
+        $('#menuImagePreview').load(function() { $(this).show(); });
+        $("#menuImageFile").on('change', function(){ readURL(this); });
+    })(jQuery);

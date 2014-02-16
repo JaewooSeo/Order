@@ -5,7 +5,6 @@
 
 var express = require('express');
 var routes = require('./routes');
-var controller = require('./controller');
 var http = require('http');
 var path = require('path');
 
@@ -29,9 +28,7 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-
-var prefixs = ['menus'];
-prefixs.forEach(function (prefix) { controller.mapRoute(app, prefix); });
+require('./controllers/menus').mapRoute(app);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
