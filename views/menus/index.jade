@@ -18,13 +18,13 @@ block content
                 div(class="panel-body")
                     div(align="right")
                         div(class="btn-group")
-                            a(class="btn btn-success btn-sm") 
+                            a(class="btn btn-success btn-sm" onclick="onOrder('" + menu._id + "');") 
                                 span(class="glyphicon glyphicon-earphone")
                                 b  주문하기
                             a(class="btn btn-default btn-sm" href="/menus/" + menu._id + "/edit" data-toggle="modal" data-target="#menuModal") 
                                 span(class="glyphicon glyphicon-edit")
                                 |  수정
-                            a(type="submit" class="btn btn-default btn-sm" onclick="onDelete('" + menu._id + "');") 
+                            a(class="btn btn-default btn-sm" onclick="onDelete('" + menu._id + "');") 
                                 span(class="glyphicon glyphicon-remove")
                                 |  삭제
                     p
@@ -32,12 +32,6 @@ block content
                         img(src="/images/menus/" + menu.image class="img-responsive img-rounded")
                     p #{menu.desc}
                 table(class="table")
-                    if menu.comments 
-                        each comment in menu.comments
-                            tr
-                                td
-                                    b(class="text-primary") #{comment.name}
-                                    |  #{comment.text}
                     tr
                         td
                             form(role="form" method="post" action="/menus/" + menu._id + "/comment")
@@ -48,6 +42,12 @@ block content
                                         td(width="5px")
                                         td(width="1px")
                                             button(type="submit" class="btn btn-default btn-sm") 쓰기
+                    if menu.comments 
+                        each comment in menu.comments
+                            tr
+                                td
+                                    b(class="text-primary") #{comment.name}
+                                    |  #{comment.text}
 
     form(id="orderForm" role="form" method="post" action="/orders/create")
         input(id="orderMenuId" type="hidden" name="menuId")
@@ -69,6 +69,10 @@ block content
                         button(type="submit" class="btn btn-primary") 삭제
 
     script(type="text/javascript").
+        function onOrder(_id) {
+            $('#orderMenuId').val(_id);
+            $('#orderForm').submit();
+        }
         function onDelete(_id) {
             $('#yesnoForm').attr('action', '/menus/' + _id);
             $('#yesnoModal').modal();

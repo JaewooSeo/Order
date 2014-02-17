@@ -8,40 +8,70 @@ exports.mapRoute = function (app) {
     app.get('/orders/:id', exports.show);
 
     app.post('/orders/create', exports.create);
-    app.put('/orders/:id', exports.update);
+    app.post('/orders/:id/order', exports.order);
     app.del('/orders/:id', exports.delete);
 }
 
-exports.index = funciton (req, res) {
+exports.index = function (req, res) {
 }
 
-exports.show = funciton (req, res) {
+exports.show = function (req, res) {
+    MongoClient.connect(dburl, function (err, db) {
+        if (err) throw err;
+        var orders = db.collection('orders');
+        orders.findOne({ _id: new ObjectID(req.params.id) }, function (err, order) {
+            if (err) throw err;
+            var menus = db.collection('menus');
+            menus.findOne({ _id: order.menu_id }, function (err, menu) {
+                if (err) throw err;
+                var orderMap = new Object;
+                for(var i in order.order) {
+                    var v = order.order[i];
+                    if (!orderMap[v.item]) {
+
+                        orderMap[v.item] = [];
+                    }
+                    orderMap[v.item].push(v.name);
+                }
+                order.orderMap = orderMap;
+                console.log(order);
+                res.render('orders/show', { menu: menu, order: order });
+            });
+        });
+    });
 }
 
-exports.create = funciton (req, res) {
+exports.create = function (req, res) {
     MongoClient.connect(dburl, function (err, db) {
         if (err) throw err;
         var menus = db.collection('menus');
-
-        menus.findOne({ _id: new ObjectID(req.params.id) }, function (err, menu) {
+        menus.findOne({ _id: new ObjectID(req.body.menuId) }, function (err, menu) {
             if (err) throw err;
-            console.log(menu);
-
             var orders = db.collection('orders');
             var oid = new ObjectID();
             var order = { _id: oid, menu_id: menu._id, createTime: new Date() };
-            orders.insert(menu, function (err, docs) {
+            orders.insert(order, function (err, docs) {
                 if (err) throw err;
-                console.log(docs);
                 res.redirect('/orders/' + oid);
             });
         });
     });
 }
 
-exports.update = funciton (req, res) {
+exports.order = function (req, res) {
+    MongoClient.connect(dburl, function (err, db) {
+        if (err) throw err;
+        var orders = db.collection('orders');
+        orders.update({ _id: new ObjectID(req.params.id) }, 
+                      { $push: { order: { name: req.body.name, item: req.body.item, createTime: new Date() }}}, 
+                      function (err, result) {
+            if (err) throw err;
+            res.redirect('/orders/' + req.params.id);
+        });
+    });
+
 }
 
-exports.delete = funciton (req, res) {
+exports.delete = function (req, res) {
 }
 
