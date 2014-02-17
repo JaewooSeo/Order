@@ -48,9 +48,9 @@ block content
                                         td(width="5px")
                                         td(width="1px")
                                             button(type="submit" class="btn btn-default btn-sm") 쓰기
-                form(role="form" method="post" action="/menus/" + menu._id)
-                    input(type="hidden" name="_method" value="put")
 
+    form(id="orderForm" role="form" method="post" action="/orders/create")
+        input(id="orderMenuId" type="hidden" name="menuId")
     div(class="modal fade" id="menuModal" role="dialog")
         div(class="modal-dialog")
             div(class="modal-content" id="menuModalContent")
