@@ -7,8 +7,10 @@ block content
                 td
                     h1 메뉴판
                 td(align="right")
-                    //a(type="button" class="btn btn-primary btn-lg" href="/menus/new") 새 메뉴
-                    a(type="button" class="btn btn-primary btn-lg" href="/menus/new" data-toggle="modal" data-target="#menuModal") 새 메뉴
+                    a(type="button" class="btn btn-primary btn-lg" href="/menus/new" data-toggle="modal" data-target="#menuModal") 
+                        span(class="glyphicon glyphicon-plus")
+                        b  새 메뉴
+        p
         each menu in menus
             div(class="panel panel-default")
                 div(class="panel-heading")
@@ -17,7 +19,7 @@ block content
                     div(align="right")
                         div(class="btn-group")
                             a(class="btn btn-success btn-sm") 
-                                span(class="glyphicon glyphicon-ok")
+                                span(class="glyphicon glyphicon-earphone")
                                 b  주문하기
                             a(class="btn btn-default btn-sm" href="/menus/" + menu._id + "/edit" data-toggle="modal" data-target="#menuModal") 
                                 span(class="glyphicon glyphicon-edit")
@@ -26,7 +28,7 @@ block content
                                 span(class="glyphicon glyphicon-remove")
                                 |  삭제
                     p
-                    if menu.image 
+                    a(href="/images/menus/" + menu.image)
                         img(src="/images/menus/" + menu.image class="img-responsive img-rounded")
                     p #{menu.desc}
                 table(class="table")
