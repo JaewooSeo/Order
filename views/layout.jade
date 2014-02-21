@@ -9,4 +9,21 @@ html
     script(src="/jquery/jquery.timeago.js")
     script(src="/bootstrap/dist/js/bootstrap.min.js")
   body
+    nav(class="navbar navbar-default navbar-fixed-top" role="navigation")
+        div(class="container")
+            ul(class="nav navbar-nav")
+                li
+                    a(href="/menus")
+                        span(class="glyphicon glyphicon-list-alt")
+                        | &nbsp;메뉴
+                li 
+                    a(href="/orders")
+                        span(class="glyphicon glyphicon-earphone")
+                        | &nbsp;주문
     block content
+
+    script.
+        var url = window.location.pathname;
+        $('ul.nav a').filter(function() {
+            return url.search(this.pathname)>=0;
+        }).parent().addClass('active');

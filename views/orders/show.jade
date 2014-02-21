@@ -11,7 +11,7 @@ block content
                     img(src="/images/menus/" + order.menu.image class="img-responsive img-rounded")
                 p #{order.menu.desc}
                 div(class="text-right")
-                    abbr(class="timeago" title=order.createTime)
+                    abbr(class="timeago" title=order.createTime.toISOString())
             table(class="table table-hover")
                 if order.order 
                     each names, item in order.orderMap

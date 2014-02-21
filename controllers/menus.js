@@ -29,8 +29,6 @@ exports.index = function (req, res) {
         var collection = db.collection('menus');
         collection.find({}, { sort: { createTime: -1 } }).toArray(function (err, docs) {
             if (err) throw err;
-
-            console.log(util.inspect(docs, { depth: null }));
             res.render('menus/index', { menus: docs });
         });
     });

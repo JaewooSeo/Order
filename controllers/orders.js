@@ -1,6 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var async = require('async');
+var util = require('util');
 
 var dburl = 'mongodb://127.0.0.1:27017/order';
 
@@ -31,7 +32,6 @@ exports.index = function (req, res) {
                 });
             }, function(err) {
                 if (err) throw err;
-                console.log(docs);
                 res.render('orders/index', { orders : docs });
             });
         });
