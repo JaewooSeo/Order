@@ -2,7 +2,9 @@ extends ../layout
 
 block content
     div(class="main")
-        h1 주문
+        h1 
+            span(class="glyphicon glyphicon-earphone")
+            | &nbsp;주문판
         each order in orders
             a(class="btn btn-default" style="width:100%" href="/orders/" + order._id)
                 table(width="100%")
