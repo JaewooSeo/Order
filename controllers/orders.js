@@ -119,6 +119,14 @@ exports.update = function (req, res) {
 }
 
 exports.delete = function (req, res) {
-    res.redirect('/orders/' + req.params.id);
+    MongoClient.connect(dburl, function (err, db) {
+        if (err) throw err;
+        var orders = db.collection('orders');
+        orders.remove({ _id: new ObjectID(req.params.id) }, 
+                      function(err, result) {
+            if (err) throw err;
+            res.redirect('/orders');
+        });
+    });
 }
 
