@@ -50,11 +50,23 @@ block content
                                     b(class="text-primary") #{comment.name}
                                     |  #{comment.text}
 
-    form(id="orderForm" role="form" method="post" action="/orders/create")
-        input(id="orderMenuId" type="hidden" name="menuId")
     div(class="modal fade" id="menuModal" role="dialog")
         div(class="modal-dialog")
             div(class="modal-content" id="menuModalContent")
+    div(class="modal fade" id="orderModal" role="dialog")
+        div(class="modal-dialog modal-sm")
+            div(class="modal-content")
+                div(class="modal-header")
+                    button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
+                    h3(class="modal-title") 주문하기
+                div(class="modal-body")
+                    form(id="orderForm" role="form" method="post" action="/orders/create")
+                        input(id="orderMenuId" type="hidden" name="menuId")
+                        input(type="password" name="password" class="form-control" placeholder="암호" autofocus)
+                        p
+                        div(class="text-right")
+                            button(type="submit" class="btn btn-primary") 주문하기
+
     div(class="modal fade" id="yesnoModal" role="dialog")
         div(class="modal-dialog modal-sm")
             div(class="modal-content")
@@ -62,17 +74,16 @@ block content
                     button(type="button" class="close" data-dismiss="modal" aria-hidden="true") &times;
                     h3(class="modal-title") 삭제
                 div(class="modal-body")
-                    | 진짜 삭제 하시겠습니까?
-                div(class="modal-footer")
+                    p 진짜 삭제 하시겠습니까?
                     form(role="form" id="yesnoForm" method="post")
                         input(type="hidden" name="_method" value="delete")
-                        button(type="button" class="btn btn-default" data-dismiss="modal") 취소
-                        button(type="submit" class="btn btn-primary") 삭제
+                        div(class="text-right")
+                            button(type="submit" class="btn btn-primary") 삭제
 
     script(type="text/javascript").
         function onOrder(_id) {
             $('#orderMenuId').val(_id);
-            $('#orderForm').submit();
+            $('#orderModal').modal();
         }
         function onDelete(_id) {
             $('#yesnoForm').attr('action', '/menus/' + _id);

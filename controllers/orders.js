@@ -70,7 +70,7 @@ exports.create = function (req, res) {
             if (err) throw err;
             var orders = db.collection('orders');
             var oid = new ObjectID();
-            var order = { _id: oid, menu_id: menu._id, createTime: new Date() };
+            var order = { _id: oid, password: req.body.password, menu_id: menu._id, createTime: new Date() };
             orders.insert(order, function (err, docs) {
                 if (err) throw err;
                 res.redirect('/orders/' + oid);
@@ -109,11 +109,17 @@ exports.update = function (req, res) {
     MongoClient.connect(dburl, function (err, db) {
         if (err) throw err;
         var orders = db.collection('orders');
-        orders.update({ _id: new ObjectID(req.params.id) }, 
-                      { $set : { close: req.body.close }},
-                      function (err, result) {
-            if (err) throw err;
-            res.redirect('/orders/' + req.params.id);
+        orders.findOne({ _id: new ObjectID(req.params.id) }, function (err, order) {
+            if (order.password==null || order.password==req.body.password) {
+                orders.update({ _id: new ObjectID(req.params.id) }, 
+                              { $set : { close: req.body.close }},
+                              function (err, result) {
+                    if (err) throw err;
+                    res.redirect('/orders/' + req.params.id);
+                });
+            } else {
+                res.redirect('/orders/' + req.params.id);
+            }
         });
     });
 }
@@ -122,10 +128,16 @@ exports.delete = function (req, res) {
     MongoClient.connect(dburl, function (err, db) {
         if (err) throw err;
         var orders = db.collection('orders');
-        orders.remove({ _id: new ObjectID(req.params.id) }, 
-                      function(err, result) {
-            if (err) throw err;
-            res.redirect('/orders');
+        orders.findOne({ _id: new ObjectID(req.params.id) }, function (err, order) {
+            if (order.password==null || order.password==req.body.password) {
+                orders.remove({ _id: new ObjectID(req.params.id) }, 
+                              function(err, result) {
+                    if (err) throw err;
+                    res.redirect('/orders');
+                });
+            } else {
+                res.redirect('/orders/' + req.params.id);
+            }
         });
     });
 }
