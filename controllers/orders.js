@@ -44,20 +44,25 @@ exports.show = function (req, res) {
         var orders = db.collection('orders');
         orders.findOne({ _id: new ObjectID(req.params.id) }, function (err, order) {
             if (err) throw err;
-            var menus = db.collection('menus');
-            menus.findOne({ _id: order.menu_id }, function (err, menu) {
-                if (err) throw err;
-                var orderMap = new Object;
-                for(var i in order.order) {
-                    var v = order.order[i];
-                    if (!orderMap[v.item]) orderMap[v.item] = [];
-                    orderMap[v.item].push(v.name);
-                }
-                order.orderMap = orderMap;
-                order.menu = menu;
-                console.log(order);
-                res.render('orders/show', { order: order });
-            });
+            if (order==null)
+            {
+                res.redirect('/orders');
+            } else {
+                var menus = db.collection('menus');
+                menus.findOne({ _id: order.menu_id }, function (err, menu) {
+                    if (err) throw err;
+                    var orderMap = new Object;
+                    for(var i in order.order) {
+                        var v = order.order[i];
+                        if (!orderMap[v.item]) orderMap[v.item] = [];
+                        orderMap[v.item].push(v.name);
+                    }
+                    order.orderMap = orderMap;
+                    order.menu = menu;
+                    console.log(order);
+                    res.render('orders/show', { order: order });
+                });
+            }
         });
     });
 }
