@@ -2,8 +2,40 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var async = require('async');
 var util = require('util');
+var querystring = require('querystring');
+var url = require('url');
+var https = require('https');
 
 var dburl = 'mongodb://127.0.0.1:27017/order';
+
+var slackUrl = 'https://slack.com/api/chat.postMessage'
+var slackToken = 'xoxp-2367107353-2370259650-2376525984-fa493e';
+var slackChannel = '#general';
+
+function slackPostMessage(msg)
+{
+    var payload = {
+        'token': slackToken,
+        'channel': slackChannel,
+        'username': '밥서버님',
+        'mrkdwn': true,
+        'text': msg,
+        'icon_url': 'http://c.ask.nate.com/imgs/qrsi.tsp/6404776/8482551/0/1/A/%EB%B0%A5.jpg',
+    };
+    var postdata = querystring.stringify(payload);
+    var options = url.parse(slackUrl);
+    options.method = 'POST';
+    options.headers = { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': postdata.length };
+
+    var req = https.request(options, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            console.log('Response: ' + chunk);
+        });
+    });
+    req.write(postdata);
+    req.end();
+}
 
 exports.mapRoute = function (app) {
     app.get('/orders', exports.index);
@@ -79,6 +111,8 @@ exports.create = function (req, res) {
             orders.insert(order, function (err, docs) {
                 if (err) throw err;
                 res.redirect('/orders/' + oid);
+                var msg = '*' + menu.name + '* 의 주문이 시작되었습니다. 빨리 주문하세요!! http://' + req.headers.host + '/orders/' + oid;
+                slackPostMessage(msg);
             });
         });
     });
