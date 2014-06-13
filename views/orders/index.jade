@@ -10,8 +10,9 @@ block content
                 table(width="100%")
                     tr(height="128px")
                         td(width="128px" align="right" valign="top")
-                            a(href="/images/menus/" + order.menu.image)
-                                img(class="img-responsive img-rounded" style="max-height: 128px;" src="/images/menus/" + order.menu.image)
+                            if order.menu.image
+                                a(href="/images/menus/" + order.menu.image)
+                                    img(class="img-responsive img-rounded" style="max-height: 128px;" src="/images/menus/" + order.menu.image)
                         td &nbsp;
                         td(align="left" valign="top")
                             div(style="overflow: hidden; text-overflow: ellipsis; max-height: 128px;")
