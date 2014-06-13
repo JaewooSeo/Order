@@ -6,34 +6,34 @@ block content
             span(class="glyphicon glyphicon-earphone")
             | &nbsp;주문판
         each order in orders
-            a(class="btn btn-default" style="width:100%" href="/orders/" + order._id)
-                table(width="100%")
-                    tr(height="128px")
-                        td(width="128px" align="right" valign="top")
-                            if order.menu.image
-                                a(href="/images/menus/" + order.menu.image)
-                                    img(class="img-responsive img-rounded" style="max-height: 128px;" src="/images/menus/" + order.menu.image)
-                        td &nbsp;
-                        td(align="left" valign="top")
-                            div(style="overflow: hidden; text-overflow: ellipsis; max-height: 128px;")
-                                table
-                                    tr
-                                        td
-                                            h3(class="media-heading") #{order.menu.name}
-                                        td &nbsp;
-                                        td
-                                            if order.close==='true'
-                                                span(class="label label-default") 주문 완료
-                                            else
-                                                span(class="label lead label-success") 주문중...
-                                        td &nbsp; 
-                                        td(class="text-muted")
-                                            | #{order.order ? order.order.length : 0}명
-                                        td &nbsp;/&nbsp;
-                                        td(class="text-muted")
-                                            abbr(class="timeago" title=order.createTime.toISOString())
-                                | #{order.menu.desc}
-            p
+            if order.menu
+                a(class="btn btn-default" style="width:100%" href="/orders/" + order._id)
+                    table(width="100%")
+                        tr(height="128px")
+                            td(width="128px" align="right" valign="top")
+                                    a(href="/images/menus/" + order.menu.image)
+                                        img(class="img-responsive img-rounded" style="max-height: 128px;" src="/images/menus/" + order.menu.image)
+                            td &nbsp;
+                            td(align="left" valign="top")
+                                div(style="overflow: hidden; text-overflow: ellipsis; max-height: 128px;")
+                                    table
+                                        tr
+                                            td
+                                                h3(class="media-heading") #{order.menu.name}
+                                            td &nbsp;
+                                            td
+                                                if order.close==='true'
+                                                    span(class="label label-default") 주문 완료
+                                                else
+                                                    span(class="label lead label-success") 주문중...
+                                            td &nbsp; 
+                                            td(class="text-muted")
+                                                | #{order.order ? order.order.length : 0}명
+                                            td &nbsp;/&nbsp;
+                                            td(class="text-muted")
+                                                abbr(class="timeago" title=order.createTime.toISOString())
+                                    | #{order.menu.desc}
+                p
     
     script.
         jQuery(document).ready(function() { jQuery("abbr.timeago").timeago(); });
