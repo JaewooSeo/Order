@@ -73,8 +73,17 @@ exports.index = function (req, res) {
 exports.show = function (req, res) {
     MongoClient.connect(dburl, function (err, db) {
         if (err) throw err;
+        
+        var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
+        if( !checkForHexRegExp.test(req.params.id) )
+        {
+            res.redirect('/orders');
+            return;
+        }
+
         var orders = db.collection('orders');
         orders.findOne({ _id: new ObjectID(req.params.id) }, function (err, order) {
+            if (err) throw err;
             if (order==null)
             {
                 res.redirect('/orders');
