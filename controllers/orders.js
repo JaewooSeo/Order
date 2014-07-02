@@ -75,7 +75,6 @@ exports.show = function (req, res) {
         if (err) throw err;
         var orders = db.collection('orders');
         orders.findOne({ _id: new ObjectID(req.params.id) }, function (err, order) {
-            if (err) throw err;
             if (order==null)
             {
                 res.redirect('/orders');
