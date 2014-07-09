@@ -17,7 +17,7 @@ function slackPostMessage(msg)
     var payload = {
         'token': slackToken,
         'channel': slackChannel,
-        'username': '밥서버님',
+        'username': '밥서버님(BabServer)',
         'mrkdwn': true,
         'text': msg,
         'icon_url': 'http://c.ask.nate.com/imgs/qrsi.tsp/6404776/8482551/0/1/A/%EB%B0%A5.jpg',
